@@ -11,13 +11,13 @@ public class Blocks extends Rectangle {
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(x, y, width, height);
-		g.setColor(Color.WHITE);
-		g.drawRect(x, y, width, height);
+//		g.setColor(Color.BLACK);
+//		g.fillRect(x, y, width, height);
+//		g.setColor(Color.WHITE);
+//		g.drawRect(x, y, width, height);
 		
 		// Utilizar sprite
-		// g.drawImage(SpriteSheet.tileWall, x, y, 32, 32, null);
+		 g.drawImage(SpriteSheet.tileWall, x, y, 32, 32, null);
 		
 	}
 
