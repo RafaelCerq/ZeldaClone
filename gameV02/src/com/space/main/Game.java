@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import com.space.entities.Player;
 import com.space.graficos.Spritesheet;
 
 
-public class Game extends Canvas implements Runnable {
+public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	//Variables
@@ -34,8 +36,11 @@ public class Game extends Canvas implements Runnable {
 	//private Graphics2D g2;
 	/***/
 	
+	private Player player;
+	
 	//Construtor
 	public Game() {
+		addKeyListener(this);
 		this.setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		initFrame();
 		//Inicializando Objetos
@@ -43,19 +48,19 @@ public class Game extends Canvas implements Runnable {
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 		
-		Player player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 16, 16));
+		player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 	}
 	
-	//Criação da Janela
+	//Criaï¿½ï¿½o da Janela
 	public void initFrame() {
 		frame = new JFrame("New Window");
 		frame.add(this);
-		frame.setResizable(false);//Usuário não irá ajustar janela
+		frame.setResizable(false);//Usuï¿½rio nï¿½o irï¿½ ajustar janela
 		frame.pack();
 		frame.setLocationRelativeTo(null);//Janela inicializa no centro
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Fechar o programa por completo
-		frame.setVisible(true);//Dizer que estará visível
+		frame.setVisible(true);//Dizer que estarï¿½ visï¿½vel
 	}
 	
 	//Threads
@@ -89,9 +94,9 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	//O que será mostrado em tela
+	//O que serï¿½ mostrado em tela
 	public void render() {
-		BufferStrategy bs = this.getBufferStrategy();//Sequência de buffer para otimizar a renderização, lidando com performace gráfica
+		BufferStrategy bs = this.getBufferStrategy();//Sequï¿½ncia de buffer para otimizar a renderizaï¿½ï¿½o, lidando com performace grï¿½fica
 		if (bs == null) {
 			this.createBufferStrategy(3);
 			return;
@@ -111,7 +116,7 @@ public class Game extends Canvas implements Runnable {
 		
 		/***/
 		
-		g.dispose();//Limpar dados de imagem não usados
+		g.dispose();//Limpar dados de imagem nï¿½o usados
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE,null);
 		bs.show();
@@ -148,6 +153,44 @@ public class Game extends Canvas implements Runnable {
 		}
 		
 		stop(); //Garante que todas as Threads relacionadas ao computador foram terminadas, para garantir performance.
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT | e.getKeyCode() == KeyEvent.VK_D) {
+			player.right = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT | e.getKeyCode() == KeyEvent.VK_A) {
+			player.left = true;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_UP | e.getKeyCode() == KeyEvent.VK_W) {
+			player.up = true;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN | e.getKeyCode() == KeyEvent.VK_S) {
+			player.down = true;
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT | e.getKeyCode() == KeyEvent.VK_D) {
+			player.right = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT | e.getKeyCode() == KeyEvent.VK_A) {
+			player.left = false;
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_UP | e.getKeyCode() == KeyEvent.VK_W) {
+			player.up = false;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN | e.getKeyCode() == KeyEvent.VK_S) {
+			player.down = false;
+		}
 		
 	}
 }
