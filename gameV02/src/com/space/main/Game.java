@@ -52,15 +52,15 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		entities.add(player);
 	}
 	
-	//Criaï¿½ï¿½o da Janela
+	//Criação da Janela
 	public void initFrame() {
 		frame = new JFrame("New Window");
 		frame.add(this);
-		frame.setResizable(false);//Usuï¿½rio nï¿½o irï¿½ ajustar janela
+		frame.setResizable(false);//Usuário não irá ajustar janela
 		frame.pack();
 		frame.setLocationRelativeTo(null);//Janela inicializa no centro
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Fechar o programa por completo
-		frame.setVisible(true);//Dizer que estarï¿½ visï¿½vel
+		frame.setVisible(true);//Dizer que estará visível
 	}
 	
 	//Threads
@@ -94,9 +94,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		}
 	}
 	
-	//O que serï¿½ mostrado em tela
+	//O que será mostrado em tela
 	public void render() {
-		BufferStrategy bs = this.getBufferStrategy();//Sequï¿½ncia de buffer para otimizar a renderizaï¿½ï¿½o, lidando com performace grï¿½fica
+		BufferStrategy bs = this.getBufferStrategy();//Sequência de buffer para otimizar a renderização, lidando com performace gráfica
 		if (bs == null) {
 			this.createBufferStrategy(3);
 			return;
@@ -116,7 +116,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		
 		/***/
 		
-		g.dispose();//Limpar dados de imagem nï¿½o usados
+		g.dispose();//Limpar dados de imagem não usados
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE,null);
 		bs.show();
