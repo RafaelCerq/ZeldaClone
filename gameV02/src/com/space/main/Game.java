@@ -26,17 +26,17 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static JFrame frame;
 	private boolean isRunning = true;
 	private Thread thread;
-	private final int WIDTH = 240, HEIGHT = 160, SCALE = 3;
+	public static final int WIDTH = 240, HEIGHT = 160, SCALE = 3;
 
 	private BufferedImage image;
 	private Graphics g;
 
 
-	public List<Entity> entities;
+	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
 
 	public static World world;
-	private Player player;
+	public static Player player;
 
 	// private Graphics2D g2;
 	/***/
@@ -53,9 +53,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 
-		world = new World("/level1.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
+		world = new World("/level1.png");
 	}
 
 	// Criação da Janela
