@@ -52,11 +52,12 @@ public class Enemy extends Entity {
 			if (Game.rand.nextInt(100) < 10) {
 				
 			}
-			Game.player.life--;
+			Game.player.life-=Game.rand.nextInt(3); // perde vida com valores entre 0 a 3
 			System.out.println("Vida: " + Game.player.life);
-//			if (Game.player.life == 0) {
+			if (Game.player.life <= 0) {
+				//Game Over
 //				System.exit(1); // Fecha a tela do jogo
-//			}
+			}
 		}
 		
 		frames++;
