@@ -49,6 +49,14 @@ public class Enemy extends Entity {
 			}
 		} else {
 			// Inimigo perto do player
+			if (Game.rand.nextInt(100) < 10) {
+				
+			}
+			Game.player.life--;
+			System.out.println("Vida: " + Game.player.life);
+//			if (Game.player.life == 0) {
+//				System.exit(1); // Fecha a tela do jogo
+//			}
 		}
 		
 		frames++;
