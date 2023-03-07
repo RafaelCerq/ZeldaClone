@@ -18,6 +18,7 @@ import com.space.entities.Enemy;
 import com.space.entities.Entity;
 import com.space.entities.Player;
 import com.space.graficos.Spritesheet;
+import com.space.graficos.UI;
 import com.space.world.World;
 
 
@@ -42,6 +43,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static Player player;
 	
 	public static Random rand;
+	
+	public UI ui;
 
 	// private Graphics2D g2;
 	/***/
@@ -55,6 +58,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		initFrame();
 		// Inicializando Objetos
+		ui = new UI();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
@@ -130,6 +134,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 			e.render(g);
 		}
+		
+		ui.render(g);
 
 		/***/
 
