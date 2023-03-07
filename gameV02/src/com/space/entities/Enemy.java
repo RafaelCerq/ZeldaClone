@@ -1,5 +1,6 @@
 package com.space.entities;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.space.main.Game;
@@ -14,17 +15,38 @@ public class Enemy extends Entity {
 	}
 
 	public void tick() {
-		if ((int)x < Game.player.getX() && World.isFree((int)(x+speed), this.getY())) {
-			x+=speed;
-		} else if ((int)x > Game.player.getX() && World.isFree((int)(x-speed), this.getY())) {
-			x-=speed;
+		// Maneira para o inimigo se mover de forma randomica
+		if (Game.rand.nextInt(100) < 50) {
+			if ((int)x < Game.player.getX() && World.isFree((int)(x+speed), this.getY())) {
+				x+=speed;
+			} else if ((int)x > Game.player.getX() && World.isFree((int)(x-speed), this.getY())) {
+				x-=speed;
+			}
+			
+			// colocar um else para inimigo andar uma direção por vez
+			if ((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y+speed))) {
+				y+=speed;
+			} else if ((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y-speed))) {
+				y-=speed;
+			}
 		}
 		
-		// colocar um else para inimigo andar uma direção por vez
-		if ((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y+speed))) {
-			y+=speed;
-		} else if ((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y-speed))) {
-			y-=speed;
-		}
+		
 	}
+	
+//	public boolean isColidding(int xnext, int ynext) {
+//		Rectangle enemyCurrent = new Rectangle(xnext, ynext, World.TILE_SIZE, World.TILE_SIZE);
+//		
+//		for (int i=0; i < Game.enemies.size(); i++) {
+//			Enemy e = Game.enemies.get(i);
+//			if (e == this) {
+//				continue;
+//			}
+//			Rectangle targetEnemy = new Rectangle(e.getX(), e.getY(), World.TILE_SIZE, World.TILE_SIZE);
+//			if (enemyCurrent.intersects(targetEnemy)) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 }

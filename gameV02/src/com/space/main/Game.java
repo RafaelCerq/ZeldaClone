@@ -10,9 +10,11 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.space.entities.Enemy;
 import com.space.entities.Entity;
 import com.space.entities.Player;
 import com.space.graficos.Spritesheet;
@@ -34,15 +36,19 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
+//	public static List<Enemy> enemies;
 
 	public static World world;
 	public static Player player;
+	
+	public static Random rand;
 
 	// private Graphics2D g2;
 	/***/
 
 	// Construtor
 	public Game() {
+		rand = new Random();
 		// Para que os eventos de teclado funcionem
 		addKeyListener(this);
 
@@ -51,6 +57,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		// Inicializando Objetos
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
+//		enemies = new ArrayList<Enemy>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
