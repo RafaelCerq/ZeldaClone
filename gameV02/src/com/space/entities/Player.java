@@ -67,11 +67,29 @@ public class Player extends Entity {
 			}
 		}
 		
+		checkCollisionLifePack();
+		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
 	}
 	
 	
+	public void checkCollisionLifePack() {
+		for (int i =0; i < Game.entities.size(); i++) {
+			Entity e = Game.entities.get(i);
+			if (e instanceof LifePack) {
+				if (Entity.isColidding(this, e)) {
+					life+=8;
+					if (life >= 100 ) {
+						life = 100;
+					}
+					Game.entities.remove(i);
+					return;
+				}
+			}
+		}
+	}
+
 	public void render(Graphics g) {
 		if (dir == right_dir) {
 			g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);			

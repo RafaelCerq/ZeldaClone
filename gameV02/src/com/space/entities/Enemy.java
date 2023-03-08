@@ -39,7 +39,7 @@ public class Enemy extends Entity {
 				x-=speed;
 			}
 			
-			// colocar um else para inimigo andar uma direção por vez
+			// colocar um else para inimigo andar uma direï¿½ï¿½o por vez
 			if ((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y+speed))
 					&& !isColidding(this.getX(), (int)(y+speed))) {
 				y+=speed;
@@ -49,14 +49,14 @@ public class Enemy extends Entity {
 			}
 		} else {
 			// Inimigo perto do player
-			if (Game.rand.nextInt(100) < 10) {
+			if (Game.random.nextInt(100) < 10) {
+				Player.life-=Game.random.nextInt(3); // perde vida com valores entre 0 a 3
+				if (Player.life <= 0) {
+					//Game Over
+					System.exit(1); // Fecha a tela do jogo
+				}
+				System.out.println("Vida: " + Player.life);
 				
-			}
-			Game.player.life-=Game.rand.nextInt(3); // perde vida com valores entre 0 a 3
-			System.out.println("Vida: " + Game.player.life);
-			if (Game.player.life <= 0) {
-				//Game Over
-//				System.exit(1); // Fecha a tela do jogo
 			}
 		}
 		

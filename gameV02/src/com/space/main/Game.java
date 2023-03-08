@@ -42,7 +42,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static World world;
 	public static Player player;
 	
-	public static Random rand;
+	public static Random random;
 	
 	public UI ui;
 
@@ -51,7 +51,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	// Construtor
 	public Game() {
-		rand = new Random();
+		random = new Random();
 		// Para que os eventos de teclado funcionem
 		addKeyListener(this);
 
