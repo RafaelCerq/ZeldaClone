@@ -2,7 +2,9 @@ package com.space.entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import com.space.graficos.Spritesheet;
 import com.space.main.Game;
 import com.space.world.Camera;
 import com.space.world.World;
@@ -25,7 +27,7 @@ public class Player extends Entity {
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
 	
-	public static double life = 100, maxLife = 100;
+	public double life = 100, maxLife = 100;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -84,6 +86,16 @@ public class Player extends Entity {
 				this.damageFrames = 0;
 				isDamaged = false;
 			}
+		}
+		
+		if (life <= 0) {
+			Game.entities = new ArrayList<Entity>();
+			Game.enemies = new ArrayList<Enemy>();
+			Game.spritesheet = new Spritesheet("/spritesheet.png");
+			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+			Game.entities.add(Game.player);
+			Game.world = new World("/level1.png");
+			return;
 		}
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);

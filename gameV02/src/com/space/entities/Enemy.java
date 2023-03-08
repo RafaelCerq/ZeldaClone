@@ -50,13 +50,10 @@ public class Enemy extends Entity {
 		} else {
 			// Colidindo
 			if (Game.random.nextInt(100) < 10) {
-				Player.life-=Game.random.nextInt(3); // perde vida com valores entre 0 a 3
+				Game.player.life-=Game.random.nextInt(3); // perde vida com valores entre 0 a 3
 				Game.player.isDamaged = true;
-				if (Player.life <= 0) {
-					//Game Over
-					System.exit(1); // Fecha a tela do jogo
-				}
-				System.out.println("Vida: " + Player.life);
+				
+				System.out.println("Vida: " + Game.player.life);
 				
 			}
 		}
