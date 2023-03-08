@@ -53,7 +53,7 @@ public class Enemy extends Entity {
 				Game.player.life-=Game.random.nextInt(3); // perde vida com valores entre 0 a 3
 				Game.player.isDamaged = true;
 				
-				System.out.println("Vida: " + Game.player.life);
+//				System.out.println("Vida: " + Game.player.life);
 				
 			}
 		}
