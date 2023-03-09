@@ -117,6 +117,7 @@ public class Player extends Entity {
 			mouseShoot = false;
 			if (hasGun && ammo > 0) {
 				ammo--;
+				double angle = Math.toDegrees(Math.atan2(my - this.getX(), mx - this.getY()));
 				int dx = 0;
 				int dy = 0;
 				int px = 8;
