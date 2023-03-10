@@ -36,6 +36,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private Thread thread;
 	public static final int WIDTH = 240, HEIGHT = 160, SCALE = 3;
 
+	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
 	private BufferedImage image;
 	private Graphics g;
 
@@ -116,6 +117,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		
 		for (int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).tick();
+		}
+		
+		if(enemies.size() <= 0) {
+			//System.out.println("Next Level");
+			CUR_LEVEL++;
+			if(CUR_LEVEL > MAX_LEVEL) {
+				CUR_LEVEL = 1;
+			}
+			String newWorld = "level"+CUR_LEVEL+".png";
+			World.restartGame(newWorld);
 		}
 	}
 
