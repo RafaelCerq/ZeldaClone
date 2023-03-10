@@ -156,7 +156,7 @@ public class Player extends Entity {
 		for (int i =0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
 			if (e instanceof Weapon) {
-				if (Entity.isColidding(this, e)) {
+				if (Entity.isCollidding(this, e)) {
 					hasGun = true;
 					Game.entities.remove(i);
 				}
@@ -168,7 +168,7 @@ public class Player extends Entity {
 		for (int i =0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
 			if (e instanceof Bullet) {
-				if (Entity.isColidding(this, e)) {
+				if (Entity.isCollidding(this, e)) {
 					ammo+=10;
 //					System.out.println("Munição atual: " + ammo);
 					Game.entities.remove(i);
@@ -181,7 +181,7 @@ public class Player extends Entity {
 		for (int i =0; i < Game.entities.size(); i++) {
 			Entity e = Game.entities.get(i);
 			if (e instanceof LifePack) {
-				if (Entity.isColidding(this, e)) {
+				if (Entity.isCollidding(this, e)) {
 					life+=8;
 					if (life >= 100 ) {
 						life = 100;
