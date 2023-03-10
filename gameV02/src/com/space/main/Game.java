@@ -269,8 +269,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mousePressed(MouseEvent e) {
 		player.mouseShoot = true;
-		player.mx = (e.getX() / 3) + Camera.x;
-		player.my = (e.getY() / 3) + Camera.y;
+		player.mx = (e.getX() / 3);
+		player.my = (e.getY() / 3);
 		
 	}
 

@@ -113,18 +113,28 @@ public class Player extends Entity {
 			}
 		}
 		
+		// Criar bala e atirar com o mouse
 		if (mouseShoot) {
 			mouseShoot = false;
+
 			if (hasGun && ammo > 0) {
 				ammo--;
-				double angle = Math.toDegrees(Math.atan2(my - this.getX(), mx - this.getY()));
-				int dx = 0;
-				int dy = 0;
-				int px = 8;
+
+				int px = 0;
 				int py = 8;
-				
-				BulletShoot bullet = new BulletShoot(this.getX()+px, this.getY()+py, 3, 3, null, dx, dy);
-				Game.bullets.add(bullet);
+				double angle = 0;
+				if (dir == right_dir) {
+					px = 18;
+					angle = Math.atan2(my - (this.getY() + py - Camera.y), mx - (this.getX() + px - Camera.x));
+				} else {
+					px = -8;
+					angle = Math.atan2(my - (this.getY() + py - Camera.y), mx - (this.getX() + px - Camera.x));
+				}
+				double dx = Math.cos(angle);
+				double dy = Math.sin(angle);
+
+				BulletShoot bulletShoot = new BulletShoot(this.getX() + px, this.getY() + py, 3, 3, null, dx, dy);
+				Game.bullets.add(bulletShoot);
 			}
 		}
 		
