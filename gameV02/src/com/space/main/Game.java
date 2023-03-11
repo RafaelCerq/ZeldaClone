@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -52,6 +53,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static Random random;
 	
 	public UI ui;
+	
+	public static String gameStage = "NORMAL";
+	private boolean showMessageGameOver = true;
+	private int framesGameOver = 0;
+	private boolean restartGame = false;
 
 	// private Graphics2D g2;
 	/***/
@@ -110,23 +116,46 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			e.tick();
-		}
-		
-		for (int i = 0; i < bullets.size(); i++) {
-			bullets.get(i).tick();
-		}
-		
-		if(enemies.size() <= 0) {
-			//System.out.println("Next Level");
-			CUR_LEVEL++;
-			if(CUR_LEVEL > MAX_LEVEL) {
-				CUR_LEVEL = 1;
+		if (gameStage == "NORMAL") {
+			restartGame = false;
+			for (int i = 0; i < entities.size(); i++) {
+				Entity e = entities.get(i);
+				e.tick();
 			}
-			String newWorld = "level"+CUR_LEVEL+".png";
-			World.restartGame(newWorld);
+			
+			for (int i = 0; i < bullets.size(); i++) {
+				bullets.get(i).tick();
+			}
+			
+			if(enemies.size() <= 0) {
+				//System.out.println("Next Level");
+				CUR_LEVEL++;
+				if(CUR_LEVEL > MAX_LEVEL) {
+					CUR_LEVEL = 1;
+				}
+				String newWorld = "level"+CUR_LEVEL+".png";
+				World.restartGame(newWorld);
+			}			
+		} else if (gameStage == "GAME_OVER") {
+			
+			// Piscar mensagem de comando na tela de game over
+			framesGameOver++;
+			if (framesGameOver == 30) {
+				framesGameOver = 0;
+				if (showMessageGameOver) {
+					showMessageGameOver = false;
+				} else {
+					showMessageGameOver = true;
+				}
+			}
+			
+			if (restartGame) {
+				restartGame = false;
+				gameStage = "NORMAL";
+				CUR_LEVEL = 1;
+				String newWorld = "level"+CUR_LEVEL+".png";
+				World.restartGame(newWorld);
+			}
 		}
 	}
 
@@ -166,6 +195,20 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.setFont(new Font("arial", Font.BOLD, 20));
 		g.setColor(Color.white);
 		g.drawString("Munição: " + player.ammo, 580, 20);
+		
+		if (gameStage == "GAME_OVER") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color(0, 0, 0, 100));
+			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 36));
+			g.setColor(Color.white);
+			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 50, (HEIGHT * SCALE) / 2 - 20);
+			g.setFont(new Font("arial", Font.BOLD, 30));
+			if (showMessageGameOver) {
+				g.drawString("> Pressione ENTER para reiniciar <", (WIDTH * SCALE) / 2 - 180, (HEIGHT * SCALE) / 2 + 40);				
+			}
+		}
+		
 		bs.show();
 	}
 
@@ -238,6 +281,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			player.shoot = true;
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			restartGame = true;
 		}
 
 	}
