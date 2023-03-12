@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.space.main.Game;
+import com.space.main.Sound;
 import com.space.world.Camera;
 import com.space.world.World;
 
@@ -49,6 +50,7 @@ public class Enemy extends Entity {
 		} else {
 			// Estamos colidindo
 			if (Game.random.nextInt(100) < 10) {
+				Sound.hurtEffect.play();
 				Game.player.life -= Game.random.nextInt(3);
 				Game.player.isDamaged = true;
 			}

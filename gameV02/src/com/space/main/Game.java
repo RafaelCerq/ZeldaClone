@@ -66,6 +66,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 	// Construtor
 	public Game() {
+		Sound.musicBackground.loop();
 		random = new Random();
 		// Para que os eventos de teclado funcionem
 		addKeyListener(this);
