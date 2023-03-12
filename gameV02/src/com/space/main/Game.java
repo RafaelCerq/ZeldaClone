@@ -54,10 +54,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	
 	public UI ui;
 	
-	public static String gameStage = "NORMAL";
+	public static String gameState = "MENU";
 	private boolean showMessageGameOver = true;
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
+	
+	public Menu menu;
 
 	// private Graphics2D g2;
 	/***/
@@ -77,10 +79,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		bullets =  new ArrayList<BulletShoot>();
+		
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+		
+		menu = new Menu();
 	}
 
 	// Criação da Janela
@@ -116,7 +121,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	}
 
 	public void tick() {
-		if (gameStage == "NORMAL") {
+		if (gameState == "NORMAL") {
 			restartGame = false;
 			for (int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -136,7 +141,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				String newWorld = "level"+CUR_LEVEL+".png";
 				World.restartGame(newWorld);
 			}			
-		} else if (gameStage == "GAME_OVER") {
+		} else if (gameState == "GAME_OVER") {
 			
 			// Piscar mensagem de comando na tela de game over
 			framesGameOver++;
@@ -151,11 +156,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			
 			if (restartGame) {
 				restartGame = false;
-				gameStage = "NORMAL";
+				gameState = "NORMAL";
 				CUR_LEVEL = 1;
 				String newWorld = "level"+CUR_LEVEL+".png";
 				World.restartGame(newWorld);
 			}
+		} else if (gameState == "MENU") {
+			menu.tick();
 		}
 	}
 
@@ -196,17 +203,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.setColor(Color.white);
 		g.drawString("Munição: " + player.ammo, 580, 20);
 		
-		if (gameStage == "GAME_OVER") {
+		if (gameState == "GAME_OVER") {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setColor(new Color(0, 0, 0, 100));
 			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
 			g.setFont(new Font("arial", Font.BOLD, 36));
 			g.setColor(Color.white);
-			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 50, (HEIGHT * SCALE) / 2 - 20);
+			g.drawString("Game Over", (WIDTH * SCALE) / 2 - 90, (HEIGHT * SCALE) / 2 - 20);
 			g.setFont(new Font("arial", Font.BOLD, 30));
 			if (showMessageGameOver) {
-				g.drawString("> Pressione ENTER para reiniciar <", (WIDTH * SCALE) / 2 - 180, (HEIGHT * SCALE) / 2 + 40);				
+				g.drawString("> Pressione ENTER para reiniciar <", (WIDTH * SCALE) / 2 - 210, (HEIGHT * SCALE) / 2 + 40);				
 			}
+		} else if (gameState == "MENU") {
+			menu.render(g);
 		}
 		
 		bs.show();
@@ -270,22 +279,30 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
 		// Cima e Baixo
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			System.out.println("Cima");
 			player.up = true;
+			if (gameState == "MENU") {
+				this.menu.up = true;
+			}
 
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			System.out.println("Baixo");
 			player.down = true;
-
+			if (gameState == "MENU") {
+				this.menu.down = true;
+			}
 		}
 		
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+		if (e.getKeyCode() == KeyEvent.VK_X) {
 			player.shoot = true;
 		}
-		
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			restartGame = true;
+
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			gameState = "MENU";
+			menu.pause = true;
 		}
+		
+//		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//			restartGame = true;
+//		}
 
 	}
 
@@ -293,27 +310,26 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public void keyReleased(KeyEvent e) {
 		// Esquerda e Direita
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-
-			System.out.println("Direita Solto");
 			player.right = false;
 
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-
-			System.out.println("Esquerda Solto");
 			player.left = false;
 
 		}
 
 		// Cima e Baixo
 		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-
-			System.out.println("Cima Solto");
 			player.up = false;
 
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			System.out.println("Baixo Solto");
 			player.down = false	;
-
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.restartGame = true;
+			if (gameState == "MENU") {
+				this.menu.enter = true;
+			}
 		}
 
 	}
