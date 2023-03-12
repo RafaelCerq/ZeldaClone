@@ -1,5 +1,6 @@
 package com.space.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -33,6 +34,11 @@ public class Player extends Entity {
 	public double life = 100, maxLife = 100;
 	public int mx, my;
 	
+	public boolean jump = false, jumpUp = false, jumpDown = false;
+	public boolean isJumping = false;
+	public int z = 0, jumpSpeed = 2;
+	public int jumpFrames = 50, jumpCur = 0;
+	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
 		
@@ -51,20 +57,47 @@ public class Player extends Entity {
 	
 	public void tick() {
 		moved = false;
-		if (right && World.isFree((int)(x+speed), this.getY())) {
+		
+		if (jump) {
+			if (isJumping == false) {
+				jump = false;				
+				isJumping = true;
+				jumpUp = true;
+			}
+		}
+		
+		if (isJumping == true) {
+			if (jumpUp) {
+				jumpCur += jumpSpeed;
+			} else if (jumpDown) {
+				jumpCur -= jumpSpeed;
+				if (jumpCur <= 0) {
+					isJumping = false;
+					jumpUp = false;
+					jumpDown = false;
+				}
+			}
+			z = jumpCur;
+			if (jumpCur >= jumpFrames) {
+				jumpUp = false;
+				jumpDown = true;
+			}
+		}
+			
+		if (right && World.isFree((int)(x+speed), this.getY(), Game.player.z)) {
 			moved = true;
 			dir = right_dir;
 			x += speed;
-		} else if (left && World.isFree((int)(x-speed), this.getY())) {
+		} else if (left && World.isFree((int)(x-speed), this.getY(), Game.player.z)) {
 			moved = true;
 			dir = left_dir;
 			x -= speed;
 		}
 		
-		if (up && World.isFree(this.getX(), (int)(y-speed))) {
+		if (up && World.isFree(this.getX(), (int)(y-speed), Game.player.z)) {
 			moved = true;
 			y -= speed;
-		} else if (down && World.isFree(this.getX(), (int)(y+speed))) {
+		} else if (down && World.isFree(this.getX(), (int)(y+speed), Game.player.z)) {
 			moved = true;
 			y += speed;
 		}
@@ -194,25 +227,30 @@ public class Player extends Entity {
 	public void render(Graphics g) {
 		if (!isDamaged) {
 			if (dir == right_dir) {
-				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 				if (hasGun) {
-					g.drawImage(Entity.GUN_RIGHT, this.getX()+8 - Camera.x, this.getY() - Camera.y, null);	
+					g.drawImage(Entity.GUN_RIGHT, this.getX()+8 - Camera.x, this.getY() - Camera.y - z, null);	
 				}
 			} else if (dir == left_dir) {
-				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 				if (hasGun) {
-					g.drawImage(Entity.GUN_LEFT, this.getX()-8 - Camera.x, this.getY() - Camera.y, null);	
+					g.drawImage(Entity.GUN_LEFT, this.getX()-8 - Camera.x, this.getY() - Camera.y - z, null);	
 				}
 			}			
 		} else {
-			g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 			if (hasGun) {
 				if (dir == left_dir) {
-					g.drawImage(Entity.GUN_DAMAGE_LEFT, this.getX()-8 - Camera.x, this.getY() - Camera.y, null);
+					g.drawImage(Entity.GUN_DAMAGE_LEFT, this.getX()-8 - Camera.x, this.getY() - Camera.y - z, null);
 				} else {
-					g.drawImage(Entity.GUN_DAMAGE_RIGHT, this.getX()+8 - Camera.x, this.getY() - Camera.y, null);					
+					g.drawImage(Entity.GUN_DAMAGE_RIGHT, this.getX()+8 - Camera.x, this.getY() - Camera.y - z, null);					
 				}
 			}
+		}
+		
+		if (isJumping) {
+			g.setColor(Color.black);
+			g.fillOval(this.getX() - Camera.x + 5, this.getY() - Camera.y + 16, 8, 8);
 		}
 	}
 }
